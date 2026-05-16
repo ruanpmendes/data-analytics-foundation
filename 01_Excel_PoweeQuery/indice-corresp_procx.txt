@@ -1,0 +1,55 @@
+###########################
+# INDEX + MATCH e XLOOKUP #
+###########################
+
+Problema:
+Sintaxe do tradicional VLOOKUP(PROCV): =VLOOKUP(valor_procurado,matriz_tabela,indice_coluna,[procurar_intervalo])
+3 grandes Problemas do VLOOKUP:
+    1. Limitação da esquerda: O VLOOKUP obriga que a coluna de busca, seja a primeira coluna à esquerda da tabela, se a coluna de busca for a C e você quiser trazer os dados da coluna B, o VLOOKUP não funciona!
+    2. INDEX de Coluna Engessado: O terceiro argumento, é um número fixo(ex: 3 para trazer a terceira coluna). Se amanhã um colega adicionar uma coluna na posição 2 por exemplo, a sua coluna 3, passa ser a 4, e o VLOOKUP vai continuar trazendo o dado da coluna 3, ou seja, trazendo o dado errado.
+    3. Performance Pesada: O VLOOKUP força o Excel a carregar a matriz inteira na memória. Em planilhas grandes, o desempenho dá máquina cai.
+
+Solução 1: (Solução Elegante: INDEX+MATCH)
+    MATCH = Em qual linha está o item que eu procuro?
+    INDEX  = Sabendo o nro da linha (e da coluna), qual o valor está la dentro?
+--- MATCH: O MATCH não traz o salário ou nome de ninguém. Ele traz apenas a posição (nro da linha) de um item na lista.
+Sintaxe: =MATCH(oq_voce_busca, coluna_onde_está, 0) # o 0 significa busca exata.
+Exemplo: 
+    Se buscarmos o ID "A123" na coluna de ID, o MATCH vai retornar, por exemplo, o nro 5, ou seja, significa que o ID "A123" está na 5ª linha de dados.
+--- INDEX: Faz o oposto. Você dá uma coluna e diz: "Me traz o que está na linha 5".
+Sintaxe: =INDEX(coluna_com_resultado, nro_linha)
+--- Juntado as duas funções:
+Colocamos o MATCH dentro do INDEX para automatizar a descoberta da linha:
+=INDEX(coluna_com_resultado, MATCH(oq_voce_busca, coluna_onde_está, 0))
+--- Por que isso resolve?
+Porque apontamos para duas colunas isoladas. Se alguém adicionar 10 colunas no meio da tabela, a coluna de busca e a coluna de resultado continuam a existindo de forma independente. A fórmula não quebra. Além disso, a coluna de resultado, pode estar à esquerda ou à direita.
+
+Solução 2: XLOOKUP
+Sintaxe: =XLOOKUP(lookup_value, lookup_array, return_array)
+lookup_value == O que estamos buscando
+lookup_array == Em qual coluna isolada esse valor está?
+return_array == De qual coluna você quer trazer o resultado
+Por que essa função é a melhor opção?
+    Busca para esquerda: A coluna retorno (return_array) pode estar em qualquer lugar, à esquerda ou à direita da coluna de busca.
+    Inquebrável: Como apontamos para duas colunas separadas, se alguém adicionar ou deletar colunas no meio da tabela, o relatório continua intacto.
+    Tratamento de erros nativos: O erro #N/A, no XLOOKUP tem um 4° argumento opcional [if_not_found]. Podemos escrever por exemplo =XLOOKUP(A2, B:B, C:C, "Não Encontrado"). Se ele não achar, já limpa o relatório para você sem precisar da função IFERROR por fora.
+
+##########################
+
+## Exercício:
+Você recebeu uma tabela onde a chave de busca (o ID do Produto) está bem no meio da tabela, quebrando totalmente qualquer chance de usar o antigo VLOOKUP.
+Fora da tabela, na célula F2, imagine que você digitou o código que quer buscar: PROD-441.
+Agora, usando Referências Estruturadas (com o nome da tabela Products e colchetes []) que aprendemos na aula passada, resolva as duas tarefas abaixo na sua planilha:
+Na célula G2, use a combinação INDEX + MATCH para descobrir o nome do produto (SKU_Name) olhando para o ID da célula F2. (Repare que o nome está à esquerda do ID!).
+Na célula H2, use o moderno XLOOKUP para descobrir o preço (Price) desse mesmo produto baseado na célula F2.
+
+Amostra dos dados
+SKU_Name        ,Product_ID ,Price  ,Department
+Teclado Mecânico,PROD-992   ,350    ,Periféricos
+Mouse Gamer     ,PROD-105   ,220    ,Periféricos
+Monitor 24'     ,PROD-441   ,1200   ,Monitores
+Cadeira Office  ,PROD-302   ,850    ,Móveis
+Headset Wireless,PROD-884   ,450    ,Periféricos
+
+1: =INDEX(Products[SKU_Name], MATCH(F2, Products[Product_ID], 0))
+2: =XLOOKUP(F2, Products[Product_ID], Products[Price])
