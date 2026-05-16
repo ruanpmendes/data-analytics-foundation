@@ -36,8 +36,8 @@ Por que essa função é a melhor opção?
 
 ##########################
 
-## Exercício:
-Você recebeu uma tabela onde a chave de busca (o ID do Produto) está bem no meio da tabela, quebrando totalmente qualquer chance de usar o antigo VLOOKUP.
+## Exercícios:
+1. Você recebeu uma tabela onde a chave de busca (o ID do Produto) está bem no meio da tabela, quebrando totalmente qualquer chance de usar o antigo VLOOKUP.
 Fora da tabela, na célula F2, imagine que você digitou o código que quer buscar: PROD-441.
 Agora, usando Referências Estruturadas (com o nome da tabela Products e colchetes []) que aprendemos na aula passada, resolva as duas tarefas abaixo na sua planilha:
 Na célula G2, use a combinação INDEX + MATCH para descobrir o nome do produto (SKU_Name) olhando para o ID da célula F2. (Repare que o nome está à esquerda do ID!).
@@ -51,5 +51,33 @@ Monitor 24'     ,PROD-441   ,1200   ,Monitores
 Cadeira Office  ,PROD-302   ,850    ,Móveis
 Headset Wireless,PROD-884   ,450    ,Periféricos
 
-1: =INDEX(Products[SKU_Name], MATCH(F2, Products[Product_ID], 0))
-2: =XLOOKUP(F2, Products[Product_ID], Products[Price])
+    #solução
+    1: =INDEX(Products[SKU_Name], MATCH(F2, Products[Product_ID], 0))
+    2: =XLOOKUP(F2, Products[Product_ID], Products[Price])
+
+2. O setor financeiro precisa descobrir o nome do fornecedor baseado no número da nota fiscal. O problema é que a coluna de busca está depois do nome do fornecedor.
+Valor para procurar: NF-902. Use INDEX + MATCH para retornar o nome do fornecedor
+
+Amostra dos dados
+Supplier    ;Invoice_Number ;Total_Value
+TechCorp    ;NF-105         ;15000
+LogiBrasil  ;NF-441         ;8500
+OfficeDesign;NF-902         ;12200
+Soluções TI ;NF-302         ;4300
+
+    # solução
+    =INDEX(Financials[Supplier], MATCH(G11, Financials[Invoice_Number], 0))
+
+3. Logística (Desafio do Tratamento de Erro do XLOOKUP)
+Você precisa checar o status de entrega de um código de rastreio. Porém, alguns códigos digitados podem estar errados ou ainda não foram registrados no sistema.
+Valor para procurar: BR-888 (Esse Código não existe na tabela, utilizar 4° parametros de XLOOKUP)
+
+Amostra dos dados
+Tracking_Code   ;Destination    ;Status
+BR-101	        ;São Paulo	    ;Entregue
+BR-202	        ;Rio de Janeiro	;Em Trânsito
+BR-303	        ;Belo Horizonte	;Despachado
+BR-404	        ;Curitiba	    ;Em Trânsito
+
+    #solução
+    =XLOOKUP(G18,Logistcs[Tracking_Code], Logistcs[Status], "Not found")
