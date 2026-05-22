@@ -104,13 +104,13 @@ O que essa fórmula está fazendo:
 3. [@Região] -> "Aqui está o segredo do GROUP BY! O critério de filtro é o valor da Região desta linha atual."
 ```
 
-> ANOTAÇÃO IMPORTANTE: Usamos o travamento por célula (ex: $B$2 e $A$2) no início do intervalo para dizer ao Excel:
+> **_ANOTAÇÃO IMPORTANTE_**: Usamos o travamento por célula (ex: $B$2 e $A$2) no início do intervalo para dizer ao Excel:
 >
 > "Comece o meu intervalo de soma estritamente na célula física da primeira linha de dados, travando-a, e estenda esse intervalo de forma dinâmica até a linha atual usando a Referência Estruturada."
 
-> Travamento com $ == Garante estabilidade, evita o bug de auto-correção do Excel e força o início do intervalo na primeira linha de dados, ignorando o Header.
+> **Travamento com $** == Garante estabilidade, evita o bug de auto-correção do Excel e força o início do intervalo na primeira linha de dados, ignorando o Header.
 
-> - F4 travaa a célula ###
+> **F4 trava a célula**
 
 ---
 
@@ -141,7 +141,7 @@ Amostra dos Dados
 
 #### 3. Para controlar o orçamento anual de contratações, a diretoria quer ver o custo acumulado de salários subindo linha a linha.
 
-Crie uma terceira coluna na tabela chamada [Running_Total]. Na primeira linha dessa coluna, use a fórmula inquebrável que aprendemos usando a função SUM para fazer o acumulado da coluna [Salary].
+Crie uma terceira coluna na tabela chamada [Running_Total]. Na primeira linha dessa coluna, use a fórmula inquebrável que aprendemos usando a função `SUM` para fazer o acumulado da coluna [Salary].
 
 | Employee     | Salary |
 | ------------ | ------ |
