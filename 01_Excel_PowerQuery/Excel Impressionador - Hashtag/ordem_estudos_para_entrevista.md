@@ -1,5 +1,7 @@
 ### **Ordem de importância de estudos para Entrevistas de Emprego**
+
 ---
+
 1. Função VLOOKUP
 2. Função IF
 3. Funções Básicas (SUM, AVG, MAX, MIN)
