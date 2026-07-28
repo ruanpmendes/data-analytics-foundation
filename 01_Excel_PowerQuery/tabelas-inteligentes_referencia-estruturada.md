@@ -1,6 +1,6 @@
 ### **Tabelas Inteligentes e Referência Estruturada**
 
-> F4 trava a célula com ($a$1)
+> F4 trava a célula com ($a$1) - Trancamento
 
 ```
 @           - Referência de linha
