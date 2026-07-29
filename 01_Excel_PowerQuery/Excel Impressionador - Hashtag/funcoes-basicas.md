@@ -22,7 +22,7 @@ ex:
 >
 >       5° menor: =MENOR(H1:H9;5)
 
-## 🔒 Trancamento de Células (`F4`)
+## Trancamento de Células (`F4`)
 
 O trancamento serve para **fixar** referências de células ao arrastar ou copiar uma fórmula, evitando que o Excel/Google Sheets altere o endereço da célula de forma indesejada.
 
@@ -30,7 +30,7 @@ O trancamento serve para **fixar** referências de células ao arrastar ou copia
 - **Trancamento Parcial de Linha (`A$1`):** Trava **apenas a linha**; ao arrastar para os lados a coluna muda, mas ao arrastar para baixo a linha permanece fixa.
 - **Trancamento Parcial de Coluna (`$A1`):** Trava **apenas a coluna**; ao arrastar para baixo a linha muda, mas ao arrastar para os lados a coluna permanece fixa.
 
-> 💡 **Atalho:** Pressione a tecla **`F4`** (ou `Fn + F4` em alguns notebooks) em cima da referência para alternar entre os tipos de trancamento.
+> **Atalho:** Pressione a tecla **`F4`** (ou `Fn + F4` em alguns notebooks) em cima da referência para alternar entre os tipos de trancamento.
 
 ## CONT.VALORES e CONT.NUM
 
