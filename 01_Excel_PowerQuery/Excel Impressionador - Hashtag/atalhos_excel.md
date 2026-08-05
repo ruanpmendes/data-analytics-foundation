@@ -26,3 +26,4 @@
 | CTRL + 1            | Abre o menu de Formatar Células.                                                 |
 | CTRL + SHIFT + L    | Alternativa para ativar/desativar filtros.                                       |
 | ALT + F1            | Cria um gráfico rápido com os dados selecionados.                                |
+| CTRL + E            | Prenche de forma rápida e inteligente, de acordo com o exemplo passado, as demais linhas da planilha. (Útil para separação de texto para colunas, formatação)                    |
