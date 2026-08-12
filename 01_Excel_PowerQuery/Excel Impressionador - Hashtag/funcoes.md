@@ -7,6 +7,7 @@ Para comparar datas no Excel, usamos a função `DATE(year;month;day)`.
 ```excel
 IF(B2<DATE(2025;12;31);"Anterior";"Posterior")
 ```
+
 ---
 
 ## COUNTIFS
@@ -52,12 +53,14 @@ COUNTIFS(E:E;">" & H2)
 ```
 
 > OBS:
-> 
-> Para buscar por textos não exatos, como o LIKE do SQL, no Excel, utilizamos o asterístico("*") ao invés de porcentagem("%").
+>
+> Para buscar por textos não exatos, como o LIKE do SQL, no Excel, utilizamos o asterístico("\*") ao invés de porcentagem("%").
 >
 > Ex: Para buscar a quantidade de funcionários com o cargo de "Analista...", faremos da seguinte forma:
+>
 > ```excel
 > =COUNTIFS(B:B;"*Analista*")
+> ```
 
 ---
 
@@ -66,9 +69,11 @@ COUNTIFS(E:E;">" & H2)
 Realiza a soma de um intervalo numérico com base em **um ou mais critérios** simultâneos (funciona como uma lógica `E` / `AND`).
 
 ### 📌 Sintaxe Geral
+
 ```excel
 =SUMIFS(intervalo_soma; intervalo_critério1; critério1; [intervalo_critério2; critério2]; ...)
 ```
+
 Ex: Somar qual foi o valor total de vendas, dos vendedores da equipe "Alpha" e que seja do sexo "Feminino".
 
 ```excel
@@ -78,3 +83,103 @@ SUMIFS(C:C;B:B;"Feminino";D:D;"Alpha")
 > - C: Coluna do valor das vendas
 > - B: Coluna do sexo dos funcionários
 > - D: Coluna com o nome da equipe
+
+---
+
+## AVERAGEIFS
+
+Calcula a **média** de um intervalo numérico com base em **um ou mais critérios** simultâneos (lógica `E` / `AND`).
+
+### 📌 Sintaxe Geral
+
+```excel
+=AVERAGEIFS(intervalo_média; intervalo_critério1; critério1; [intervalo_critério2; critério2]; ...)
+```
+
+Ex: Média das vendas dos vendedores da equipe "Alpha" e sexo "Feminino".
+
+```excel
+=AVERAGEIFS(C:C;B:B;"Feminino";D:D;"Alpha")
+```
+
+> - C: Coluna do valor das vendas (intervalo a ser mediado)
+> - B: Coluna do sexo
+> - D: Coluna da equipe
+
+---
+
+## MAXIFS
+
+Retorna o **maior valor** de um intervalo numérico com base em **um ou mais critérios** simultâneos (lógica `E` / `AND`).
+
+### 📌 Sintaxe Geral
+
+```excel
+=MAXIFS(intervalo_máx; intervalo_critério1; critério1; [intervalo_critério2; critério2]; ...)
+```
+
+Ex: Maior venda dos vendedores da equipe "Alpha" e sexo "Feminino".
+
+```excel
+=MAXIFS(C:C;B:B;"Feminino";D:D;"Alpha")
+```
+
+> - C: Coluna do valor das vendas (intervalo a avaliar o máximo)
+> - B: Coluna do sexo
+> - D: Coluna da equipe
+
+---
+
+## MINIFS
+
+Retorna o **menor valor** de um intervalo numérico com base em **um ou mais critérios** simultâneos (lógica `E` / `AND`).
+
+### 📌 Sintaxe Geral
+
+```excel
+=MINIFS(intervalo_mín; intervalo_critério1; critério1; [intervalo_critério2; critério2]; ...)
+```
+
+Ex: Menor venda dos vendedores da equipe "Alpha" e sexo "Feminino".
+
+```excel
+=MINIFS(C:C;B:B;"Feminino";D:D;"Alpha")
+```
+
+> - C: Coluna do valor das vendas (intervalo a avaliar o mínimo)
+> - B: Coluna do sexo
+> - D: Coluna da equipe
+
+---
+
+### Padrão comum (\*IFS)
+
+| Função       | O que faz no intervalo filtrado |
+| ------------ | ------------------------------- |
+| `SUMIFS`     | Soma                            |
+| `AVERAGEIFS` | Média                           |
+| `MAXIFS`     | Maior valor                     |
+| `MINIFS`     | Menor valor                     |
+
+Sintaxe compartilhada: **primeiro o intervalo de cálculo**, depois pares `intervalo_critério; critério` (todos os critérios precisam ser verdadeiros ao mesmo tempo).
+
+---
+
+## VLOOKUP (PROCV)
+
+Busca um valor na **primeira coluna** de uma tabela e retorna o valor de outra coluna na mesma linha.
+
+### 📌 Sintaxe Geral
+
+```excel
+=VLOOKUP(valor_procurado; matriz_tabela; núm_coluna; [procurar_intervalo])
+```
+
+Ex: Buscar o preço do produto "P001" na coluna 3 da tabela `A:C`.
+
+```excel
+=VLOOKUP("P001";A:C;3;0)
+```
+
+> - `0` / `FALSO` → correspondência **exata**
+> - `1` / `VERDADEIRO` → correspondência **aproximada**: o Excel percorre a 1ª coluna (precisa estar ordenada crescente) e devolve a linha do **maior valor que ainda seja ≤ ao valor procurado** (“maior dentre os menores ou iguais”)
