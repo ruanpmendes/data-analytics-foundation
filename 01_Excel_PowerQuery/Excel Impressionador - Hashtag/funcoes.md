@@ -309,3 +309,149 @@ Ex: Buscar o preço do produto "P001" na linha 3 da tabela `1:8`.
 ---
 
 ## XLOOKUP (PROCX)
+
+Busca um valor em um intervalo e devolve o valor correspondente de **outro intervalo** (mesma posição). Diferente do `VLOOKUP`: não precisa da coluna de busca à esquerda, não usa número de coluna e o padrão já é correspondência **exata**.
+
+### Sintaxe Geral
+
+```excel
+=XLOOKUP(valor_procurado; intervalo_busca; intervalo_retorno; [se_não_encontrado]; [modo_correspondência]; [modo_pesquisa])
+```
+
+Ex: Buscar o preço do produto "P001" (nomes em `A:A`, preços em `C:C`).
+
+```excel
+=XLOOKUP("P001";A:A;C:C;"Não encontrado")
+```
+
+> - `intervalo_busca` e `intervalo_retorno` são intervalos **separados** (podem estar em qualquer ordem na planilha, inclusive retorno à esquerda da busca)
+> - `se_não_encontrado`: texto/valor se não achar (substitui o `IFERROR` do `VLOOKUP`)
+> - sem o 5º parâmetro → correspondência **exata** (equivalente ao `0` do `VLOOKUP`)
+
+### 5º parâmetro — modo_correspondência
+
+| Valor | Comportamento                                                                                                                                         |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`   | Exato (padrão)                                                                                                                                        |
+| `-1`  | Exato ou o **maior valor ≤ ao procurado** (mesmo raciocínio do `VLOOKUP` com `1` / `VERDADEIRO`; intervalo de busca precisa estar ordenado crescente) |
+| `1`   | Exato ou o **menor valor ≥ ao procurado**                                                                                                             |
+| `2`   | Curinga (`*` e `?`)                                                                                                                                   |
+
+### 6º parâmetro — modo_pesquisa (opcional)
+
+> - `1` (padrão): começa do **início** do intervalo
+> - `-1`: começa do **fim** (útil para pegar a última ocorrência)
+
+Chave composta no `XLOOKUP` segue a mesma ideia do `VLOOKUP`: concatenar no valor procurado e no intervalo de busca (`=XLOOKUP(F5&G5;A:A;C:C)`), sem obrigar a chave a ser a primeira coluna da tabela.
+
+---
+
+### XLOOKUP duplo e triplo (vários critérios, sem coluna auxiliar)
+
+O `XLOOKUP` simples busca em **um** intervalo. Para exigir **dois ou três critérios ao mesmo tempo** (lógica `E` / `AND`), multiplica-se comparações: cada uma vira `VERDADEIRO`/`FALSO` (`1`/`0`). O produto só é `1` quando **todas** as condições são verdadeiras.
+
+O `1` no 1º argumento **não** é um modo da função: é o **valor procurado**. O Excel monta um vetor de `0` e `1` e o `XLOOKUP` procura o primeiro `1` (primeira linha em que todas as regras bateram).
+
+### Duplo
+
+```excel
+=XLOOKUP(1;(B7:B405=B4)*(C7:C405=A4);D7:D405;"Não Encontrado")
+```
+
+> - `(B7:B405=B4)`: 1 onde a coluna B é igual a `B4`
+> - `(C7:C405=A4)`: 1 onde a coluna C é igual a `A4`
+> - `*` : só fica 1 se as duas forem 1 (`1*1=1`; qualquer `0` zera a linha)
+> - `D7:D405`: valor a devolver (mesmo tamanho dos intervalos de busca)
+
+### Triplo
+
+```excel
+=XLOOKUP(1;(B7:B405=B4)*(C7:C405=A4)*(A7:A405=C4);D7:D405;"Não Encontrado")
+```
+
+Mesma lógica: mais um `(intervalo=critério)` multiplicado. Só a linha em que as **três** comparações são verdadeiras gera `1`.
+
+> Os três intervalos (`B7:B405`, `C7:C405`, `A7:A405`) e o retorno (`D7:D405`) precisam ter **o mesmo número de linhas**.
+
+Devolve só a **primeira** linha que atende a todos os critérios (como o `XLOOKUP` normal). Para a última, usar o 6º parâmetro `-1`. Não substitui a técnica `COUNTIFS` + chave quando for preciso listar **todas** as ocorrências.
+
+---
+
+## MATCH (CORRESP)
+
+Não devolve o valor da célula: devolve a **posição** (1ª, 2ª, 3ª…) do item dentro do intervalo.
+
+### Sintaxe Geral
+
+```excel
+=MATCH(valor_procurado; intervalo_busca; [tipo_correspondência])
+```
+
+Ex: Em que linha (dentro de `A2:A100`) está o produto "P001".
+
+```excel
+=MATCH("P001";A2:A100;0)
+```
+
+> - `0` → correspondência **exata** (o mais usado)
+> - `1` → maior valor **≤** ao procurado (intervalo precisa estar em ordem crescente; mesmo raciocínio do `VLOOKUP` com `1` / `VERDADEIRO`)
+> - `-1` → menor valor **≥** ao procurado (intervalo em ordem decrescente)
+
+O número retornado é relativo ao intervalo, não ao número da linha da planilha. Se a busca começa em `A2` e o item está em `A5`, o `MATCH` devolve `4`.
+
+---
+
+## INDEX (ÍNDICE)
+
+Devolve o valor que está numa **posição** (linha e, se quiser, coluna) dentro de um intervalo.
+
+### Sintaxe Geral
+
+```excel
+=INDEX(intervalo; núm_linha; [núm_coluna])
+```
+
+Ex: 3º valor da coluna de preços `C2:C100`.
+
+```excel
+=INDEX(C2:C100;3)
+```
+
+> - `núm_linha`: qual linha **dentro do intervalo** (1 = primeira célula do intervalo)
+> - `núm_coluna`: só precisa se o intervalo tiver mais de uma coluna
+
+Sozinho, o `INDEX` só funciona se você **já souber** o número da posição. Quase sempre ele entra junto com o `MATCH`.
+
+---
+
+## INDEX + MATCH
+
+O `MATCH` acha a posição; o `INDEX` pega o valor nessa posição. Juntos substituem o `VLOOKUP`, com a vantagem de a coluna de busca **não** precisar estar à esquerda.
+
+```excel
+=INDEX(intervalo_retorno; MATCH(valor_procurado; intervalo_busca; 0))
+```
+
+Ex: Preço (`C:C`) do produto cujo código está em `A:A`.
+
+```excel
+=INDEX(C:C; MATCH("P001";A:A;0))
+```
+
+> - `MATCH("P001";A:A;0)` → posição da linha do "P001"
+> - `INDEX(C:C; …)` → valor dessa mesma posição na coluna C
+> - os dois intervalos devem ter o **mesmo tamanho** e começar na **mesma linha** (senão a posição aponta para a célula errada)
+
+### Duas dimensões (linha e coluna)
+
+Um `MATCH` para a linha e outro para a coluna:
+
+```excel
+=INDEX(B2:F10; MATCH("P001";A2:A10;0); MATCH("Jan";B1:F1;0))
+```
+
+> - 1º `MATCH`: em qual **linha** está "P001"
+> - 2º `MATCH`: em qual **coluna** está "Jan"
+> - `INDEX` cruza os dois e devolve a célula
+
+Chave composta: o `MATCH` também aceita concatenação (`=MATCH(F5&G5;A:A;0)`), no mesmo espírito do `VLOOKUP` / `XLOOKUP`.
