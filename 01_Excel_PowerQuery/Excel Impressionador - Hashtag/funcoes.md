@@ -455,3 +455,40 @@ Um `MATCH` para a linha e outro para a coluna:
 > - `INDEX` cruza os dois e devolve a célula
 
 Chave composta: o `MATCH` também aceita concatenação (`=MATCH(F5&G5,A:A,0)`), no mesmo espírito do `VLOOKUP` / `XLOOKUP`.
+
+---
+
+## OFFSET (DESLOC)
+
+### Sintaxe Geral
+
+```excel
+=OFFSET(células_referenciadas, linha, coluna, [tamanho], [largura])
+```
+
+> - `células_referenciadas`: O ponto de partida (Ex: A1).
+> - `linha`: Quantas linhas descer (positivo) ou subir (negativo com -).
+> - `coluna`: Quantas colunas ir para direita (positivo) ou esquerda (negativo com -).
+> - `[altura]` (Opcional): Estica a seleção. Quantas linhas o resultado final deve ter?
+> - `[largura]` (Opcional): Estica a seleção. Quantas colunas o resultado final deve ter?
+
+
+Ex: Retornar o valor 5 linha abaixo da célula `A1` , e 3 colunas para o lado.
+
+```excel
+=OFFSET(A1,5,3)
+```
+
+> Sozinho, o `OFFSET` só funciona se você **já souber** o número da posição. Quase sempre ele entra junto com o `MATCH`.
+
+### Operações matemáticas
+
+A função **OFFSET** não se limita a apenas retornar uma célula, ela consegue retornar um intervalo também. Basta passar no 1° parâmetro mais de uma célula.
+
+Exemplo prático: Somar todas as vendas do mês selecionado na célula `J2`, de forma <u>**dinâmica**</u>.
+
+```excel
+=SUM(OFFSET(A2:A21,0,MATCH(J2,B1:G1,0)))
+```
+
+## INDIRECT (INDIRETO)
