@@ -492,3 +492,75 @@ Exemplo prático: Somar todas as vendas do mês selecionado na célula `J2`, de 
 ```
 
 ## INDIRECT (INDIRETO)
+
+### Sintaxe Geral
+
+```excel
+=INDIRECT(ref_text, [a1])
+```
+
+> * `ref_text`: O texto que você quer transformar em uma referência real de célula, intervalo ou aba. Pode ser uma string fixa ou, mais comumente, uma concatenação dinâmica.
+> * `[a1]` (Opcional): Define o estilo de leitura. `VERDADEIRO` (padrão) para o estilo clássico de letras e números (A1). `FALSO` para o estilo Linha/Coluna (R1C1). Quase sempre omitido.
+
+**Ex:** Retornar o valor da célula `Z10`, mas passando a coordenada como texto.
+
+Excel
+
+```excel
+=INDIRECT("Z10")
+```
+
+> Sozinho, o `INDIRECT` com texto fixo não tem muita utilidade. O verdadeiro poder ocorre ao **concatenar** valores de células para montar um endereço variável.
+
+### Buscando Dados em Outras Planilhas (Abas) Dinamicamente
+
+Para referenciar outra aba nativamente, o Excel usa a estrutura `'Nome da Aba'!Célula`. A função **INDIRECT** é usada para construir essa exata string de texto dinamicamente.
+
+**Exemplo prático:** Buscar o Faturamento na célula `C10` de uma aba específica, cujo nome foi selecionado pelo usuário na célula `A2` (ex: "Fevereiro").
+
+Excel
+
+```excel
+=INDIRECT("'" & A2 & "'!C10")
+```
+
+> **OBS:** As aspas simples (`'`) envelopando a célula `A2` são essenciais. Elas garantem que a referência funcione perfeitamente caso o nome da aba contenha espaços (ex: `Vendas Físicas`).
+
+---
+
+## SUMPRODUCT (SOMARPRODUTO)
+
+Multiplica os itens correspondentes de duas ou mais matrizes (intervalos) e retorna a soma desses resultados. É ideal para evitar a criação de colunas auxiliares em bases de dados.
+
+### Sintaxe Geral
+
+```excel
+=SUMPRODUCT(matriz1, [matriz2], [matriz3], ...)
+```
+
+> * `matriz1`: O primeiro intervalo de células que você deseja multiplicar e depois somar.
+> * `[matriz2]`, `[matriz3]`: (Opcional) Os intervalos subsequentes.
+>
+> ⚠️ **Regra de Ouro:** Todos os intervalos informados **devem** ter o exato mesmo número de linhas e colunas.
+
+### Exemplo Prático 1: Faturamento Total
+
+Calcular o valor total em estoque multiplicando a coluna de Quantidade (`B2:B100`) pela coluna de Preço Unitário (`C2:C100`).
+
+Excel
+
+```excel
+=SUMPRODUCT(B2:B100, C2:C100)
+```
+
+*(O motor fará B2*C2 + B3*C3 + B4*C4... e entregará a soma total).*
+
+### Exemplo Prático 2: Média Ponderada (Uso Avançado)
+
+Para descobrir a nota final de um aluno onde as provas têm "pesos" diferentes. Multiplicamos as notas (`B2:B5`) pelos pesos (`C2:C5`) e dividimos pela soma total dos pesos.
+
+Excel
+
+```excel
+=SUMPRODUCT(B2:B5, C2:C5) / SUM(C2:C5)
+```
